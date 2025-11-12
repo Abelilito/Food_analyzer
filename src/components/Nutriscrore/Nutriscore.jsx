@@ -18,7 +18,7 @@ export const Nutriscore = ({ nutriscore }) => {
 
   return (
     <>
-      <img src={imageSrc()} className="nutriscore" />
+      <img src={imageSrc()} className="w-[100px]" />
     </>
   );
 };
