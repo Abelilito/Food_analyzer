@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { fetchFood } from "../../Data/GetFood";
 import { SearchForm } from "../SearchForm/SearchForm";
 import { FoodCard } from "../FoodCard/FoodCard";
+import { BeatLoader } from "react-spinners";
 
 export const SearchFood = () => {
   const [searchText, setSearchText] = useState("");
   const [getFood, setGetFood] = useState([]);
-  const [getCode, setGetCode] = useState("");
+  // const [getCode, setGetCode] = useState("");
   const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -31,10 +32,19 @@ export const SearchFood = () => {
   }
 
   if (isLoading) {
-    return <div className="flex justify-center">Chargement...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <BeatLoader color="#6d28d9" size={20} />
+      </div>
+    )
   }
+
   if (isError) {
-    return <div className="flex justify-center">Erreur : que ce t'a fait</div>;
+    return (
+      <div className="flex justify-center items-center h-screen text-red-600 text-6xl">
+        Erreur : que ce t'a fait
+      </div>
+    )
   }
 
   console.log(getFood.getProducts);
