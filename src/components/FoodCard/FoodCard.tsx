@@ -1,7 +1,6 @@
-import { CandyCane } from 'lucide-react';
 import { Product } from '../../Type/ProductType';
 import { Nutriscore } from '../Nutriscrore/Nutriscore';
-import ToolTip from '../ToolTip';
+import NutrimentsBadge from '../NutrimentsBadge';
 
 type FoodCardProps = {
   searchText: string;
@@ -11,33 +10,6 @@ type FoodCardProps = {
 export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
   if (!searchText || getProducts.length === 0) return null;
 
-  const highestProtein = getProducts.reduce((max, item) => {
-    return item.nutriments.proteins > max.nutriments.proteins ? item : max
-  });
-
-  const highestKcal = getProducts.reduce((max, item) => {  
-    return item.nutriments["energy-kcal"] > max.nutriments["energy-kcal"] ?  item : max
-  });
-
-  const highestSugars = getProducts.reduce((max, item) => {  
-    return item.nutriments.sugars > max.nutriments.sugars ?  item : max
-  });
-
-  const kcalImg = <img src= "./kcal.png" className="w-[30px] object-contain" />
-  const proteinImg = <img src= "./protein.png" className="w-10 object-contain" />
-
-  function nutrimentsBadge(productId: string) {
-    if (highestKcal || highestProtein || highestSugars) {
-      return (
-        <div className="mt-[15px] flex gap-4">
-          {highestKcal.id === productId && <ToolTip icon={kcalImg} text="Ce produit est le moins calorique" />}
-          {highestProtein.id === productId && <ToolTip icon={proteinImg} text="Ce produit est le plus riche en protéines" />}
-          {highestSugars.id === productId && <ToolTip icon={<CandyCane color="#AD7F58" />} text="Ce produit est le plus riche en sucre" />}
-        </div>
-      )
-    }
-  }
-  
   return (
     <div className="w-full grid justify-center gap-8 grid-cols-[repeat(auto-fit,100%)] md:grid-cols-[repeat(auto-fit,40rem)]">
       {getProducts.map((product) =>
@@ -69,7 +41,7 @@ export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
                 
                 <div className="flex gap-4 items-center">
                   <Nutriscore nutriscore={product.nutrition_grades} />
-                  {nutrimentsBadge(product.id)}
+                  <NutrimentsBadge getProducts={getProducts} productId={product.id} />
                 </div>
               </div>
             </div>
