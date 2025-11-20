@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { SearchForm } from "../SearchForm/SearchForm";
 import { FoodCard } from "../FoodCard/FoodCard";
 import { BeatLoader } from "react-spinners";
-import { Statistics } from "../Statistics/Statistics";
 import { fetchFood } from "../../Data/getFood";
 import { Product } from "../../Type/ProductType";
 
@@ -55,7 +54,7 @@ export const SearchFood = () => {
           value={searchText}
           onChangeFn={(e) => setSearchText(e.target.value)}
         />
-        {getFood.length > 0 && <Statistics />}
+        {/* {getFood.length > 0 && <Statistics />} */}
       </header>
 
       <div className="flex flex-col items-center w-full gap-16 px-4">
