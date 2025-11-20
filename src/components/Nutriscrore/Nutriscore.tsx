@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Nutriscore = ({ nutriscore }) => {
+export const Nutriscore = ({ nutriscore }: {nutriscore: string | undefined}) => {
   function imageSrc() {
     switch (nutriscore) {
       case "a":
