@@ -1,6 +1,7 @@
 import ToolTip from '../ToolTip';
 import { CandyCane } from 'lucide-react';
 import { Product } from '@/Type/ProductType';
+import { highestNutrimentValue } from '@/utils/highestNutrimentValue';
 
 type NutrimentsProps = {
   productId: string;
@@ -10,18 +11,8 @@ type NutrimentsProps = {
 export const NutrimentsBadge = ({ getProducts, productId }: NutrimentsProps) => {
   const kcalImg = <img src= "./kcal.png" className="w-[30px] object-contain" />
   const proteinImg = <img src= "./protein.png" className="w-10 object-contain" />
+  const { highestProtein, highestKcal, highestSugars } = highestNutrimentValue(getProducts)
 
-  const highestProtein = getProducts.reduce((max, item) => {
-    return item.nutriments.proteins > max.nutriments.proteins ? item : max
-  });
-
-  const highestKcal = getProducts.reduce((max, item) => {  
-    return item.nutriments["energy-kcal"] > max.nutriments["energy-kcal"] ?  item : max
-  });
-
-  const highestSugars = getProducts.reduce((max, item) => {  
-    return item.nutriments.sugars > max.nutriments.sugars ?  item : max
-  });
 
   if (highestKcal || highestProtein || highestSugars) {
     return (

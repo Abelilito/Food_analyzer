@@ -1,11 +1,13 @@
 import { Product } from '@/Type/ProductType'
+import { productName } from '@/utils/productName';
+import { Check, X } from 'lucide-react';
+import { highestNutrimentValue } from '@/utils/highestNutrimentValue';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
 import {
   Table,
   TableBody,
@@ -15,28 +17,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { Check, X } from 'lucide-react';
-
 export const ProductComparator = ({ productsSelected } : { productsSelected: Product[]}) => {  
-  const highestProtein = productsSelected.reduce((max, item) => {
-    return item.nutriments.proteins > max.nutriments.proteins ? item : max
-  });
-
-  const highestKcal = productsSelected.reduce((max, item) => {  
-    return item.nutriments["energy-kcal"] > max.nutriments["energy-kcal"] ?  item : max
-  });
-
-  const highestSugars = productsSelected.reduce((max, item) => {  
-    return item.nutriments.sugars > max.nutriments.sugars ?  item : max
-  });
-
-  const highestSalt = productsSelected.reduce((max, item) => {  
-    return item.nutriments.salt > max.nutriments.salt ?  item : max
-  });
-
-  const highestFat = productsSelected.reduce((max, item) => {  
-    return item.nutriments.fat > max.nutriments.fat ?  item : max
-  });
+  const { highestProtein, highestKcal, highestSugars, highestSalt, highestFat } = highestNutrimentValue(productsSelected)
 
   const tableRowItems = [{
     value: "Proteine - g",
@@ -55,13 +37,6 @@ export const ProductComparator = ({ productsSelected } : { productsSelected: Pro
     dataId: highestFat.id 
   }]
 
-  const productName = (product: Product) => {
-    return product.quantity_imported
-    ? `${product.product_name_fr} - ${product.quantity_imported}`
-    : product.product_name_fr
-  }
-
-
   return (
     <div className="flex justify-center gap-8">
       <Accordion type="single" collapsible>
@@ -71,28 +46,30 @@ export const ProductComparator = ({ productsSelected } : { productsSelected: Pro
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[100px]">Valeurs</TableHead>
-                  {productsSelected.map((product, index) =>
-                    <TableHead className="w-[100px]" key={index}>{productName(product)}</TableHead>
+                  <TableHead className="w-[100px]"></TableHead>
+                  {tableRowItems.map((item, index) =>
+                    <TableHead className="font-bold" key={index}>{item.value}</TableHead>
                   )}
                 </TableRow>
               </TableHeader>
 
               <TableBody>
-                {tableRowItems.map((item) => 
-                  <TableRow>
-                    <TableCell className="font-medium">{item.value}</TableCell>
-                    {productsSelected.map((product, index) =>
-                      <TableCell key={index} className="felx flex-row justify-center">
-                        {
-                          item.dataId === product.id
-                          ? <Check size={25} strokeWidth={2.25} color='#218358' /> 
-                          : <X size={25} strokeWidth={2.25} color='#CE2C31' />
-                        }
+                {productsSelected.map((product, index) =>
+                  <TableRow key={index}>
+                    <TableCell>{productName(product)}</TableCell>
+                    {tableRowItems.map((item, index) => 
+                      <TableCell key={index}>
+                        <div className="flex flex-row justify-center">
+                          {
+                            item.dataId === product.id
+                            ? <Check size={25} strokeWidth={2.25} color='#218358' /> 
+                            : <X size={25} strokeWidth={2.25} color='#CE2C31' />
+                          }
+                        </div>
                       </TableCell>
-                    )}
+                    )} 
                   </TableRow>
-                )}
+                )} 
               </TableBody>
             </Table>            
           </AccordionContent>

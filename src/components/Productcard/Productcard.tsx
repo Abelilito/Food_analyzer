@@ -1,6 +1,7 @@
 import { Product } from '../../Type/ProductType';
 import { Nutriscore } from '../Nutriscrore/Nutriscore';
 import NutrimentsBadge from '../NutrimentsBadge';
+import { productName } from '@/utils/productName';
 
 type ProductCardProps = {
   searchText: string;
@@ -44,11 +45,7 @@ export const ProductCard = ({ searchText, getProducts, isSelected, handleChange 
 
               <div className="flex flex-col justify-around gap-[5px]">
                 <div className="font-bold text-[15px]">
-                  {
-                    product.quantity_imported
-                    ? `${product.product_name_fr} - ${product.quantity_imported}`
-                    : product.product_name_fr
-                  }
+                  {productName(product)}
                 </div>
                 
                 <div className="flex gap-4 items-center">

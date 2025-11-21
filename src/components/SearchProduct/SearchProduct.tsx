@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SearchForm } from "../SearchForm/SearchForm";
 import { ProductCard } from "../Productcard/Productcard";
 import { BeatLoader } from "react-spinners";
-import { fetchProducts } from "../../Data/fetchProducts";
+import { fetchProducts } from "../../data/fetchProducts";
 import { Product } from "../../Type/ProductType";
 import { useSelectableList } from "@/hooks/useSelectableList";
 import ProductComparator from "../ProductComparator";
@@ -10,7 +10,7 @@ import ProductComparator from "../ProductComparator";
 export const SearchProduct = () => {
   const [searchText, setSearchText] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
-  const [isError, setIsError] = useState<any>(null);
+  const [isError, setIsError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { selectedItems, toggleItem, isSelected } = useSelectableList<Product>();
 
@@ -21,7 +21,7 @@ export const SearchProduct = () => {
       setProducts(Array.isArray(response) ? response : response.products ?? []);
       setIsError(null);
     } catch (error) {
-      setIsError(error);
+      setIsError(error as Error);
     } finally {
       setIsLoading(false);
     }
@@ -42,8 +42,6 @@ export const SearchProduct = () => {
     toggleItem(selectedItem, checked);
   };
 
-  useEffect(() => { selectedItems }, [selectedItems]);
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -59,6 +57,9 @@ export const SearchProduct = () => {
       </div>
     );
   }
+
+  console.log(products);
+  
 
   return (
     <>
