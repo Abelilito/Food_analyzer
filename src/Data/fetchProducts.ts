@@ -1,4 +1,4 @@
-export const fetchFood = async (searchText: string) => {
+export const fetchProducts = async (searchText: string) => {
   try {
     const response = await fetch(
       "https://world.openfoodfacts.org/cgi/search.pl?search_simple=1&action=process&json=1&search_terms=" +

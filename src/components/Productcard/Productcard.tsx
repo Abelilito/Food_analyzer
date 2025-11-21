@@ -5,14 +5,14 @@ import { useEffect } from 'react';
 import ProductComparator from '../ProductComparator';
 import { useSelectableList } from '@/hooks/useSelectableList';
 
-type FoodCardProps = {
+type ProductCardProps = {
   searchText: string;
   getProducts: Product[];
   isSelected: (id: string) => boolean;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const FoodCard = ({ searchText, getProducts, isSelected, handleChange }: FoodCardProps) => {
+export const ProductCard = ({ searchText, getProducts, isSelected, handleChange }: ProductCardProps) => {
   if (!searchText || getProducts.length === 0) return null;
 
   return (

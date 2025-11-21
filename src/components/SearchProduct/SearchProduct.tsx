@@ -1,14 +1,13 @@
-// SearchFood.tsx
 import React, { useEffect, useState } from "react";
 import { SearchForm } from "../SearchForm/SearchForm";
-import { FoodCard } from "../FoodCard/FoodCard";
+import { ProductCard } from "../Productcard/Productcard";
 import { BeatLoader } from "react-spinners";
-import { fetchFood } from "../../Data/getFood";
+import { fetchProducts } from "../../Data/fetchProducts";
 import { Product } from "../../Type/ProductType";
 import { useSelectableList } from "@/hooks/useSelectableList";
 import ProductComparator from "../ProductComparator";
 
-export const SearchFood = () => {
+export const SearchProduct = () => {
   const [searchText, setSearchText] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [isError, setIsError] = useState<any>(null);
@@ -18,7 +17,7 @@ export const SearchFood = () => {
   const getData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetchFood(searchText); 
+      const response = await fetchProducts(searchText); 
       setProducts(Array.isArray(response) ? response : response.products ?? []);
       setIsError(null);
     } catch (error) {
@@ -73,7 +72,7 @@ export const SearchFood = () => {
       </header>
 
       <div className="flex flex-col items-center w-full gap-16 px-4">
-        <FoodCard searchText={searchText} getProducts={products} isSelected={isSelected} handleChange={handleChange} />
+        <ProductCard searchText={searchText} getProducts={products} isSelected={isSelected} handleChange={handleChange} />
       </div>
     </>
   );
