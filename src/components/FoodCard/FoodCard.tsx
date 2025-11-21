@@ -1,6 +1,9 @@
 import { Product } from '../../Type/ProductType';
 import { Nutriscore } from '../Nutriscrore/Nutriscore';
 import NutrimentsBadge from '../NutrimentsBadge';
+import { useEffect } from 'react';
+import ProductComparator from '../ProductComparator';
+import { useSelectableList } from '@/hooks/useSelectableList';
 
 type FoodCardProps = {
   searchText: string;
@@ -9,8 +12,23 @@ type FoodCardProps = {
 
 export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
   if (!searchText || getProducts.length === 0) return null;
+  const { selectedItems, toggleItem, isSelected } = useSelectableList<Product>();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const id = e.currentTarget.id;
+    const checked = e.currentTarget.checked;
+
+    const selectedItem = getProducts.find((el) => el.id === id);
+    if (!selectedItem) return;
+
+    toggleItem(selectedItem, checked);
+  };
+
+  useEffect(() => { selectedItems }, [selectedItems]);
 
   return (
+    <>
+    {selectedItems.length > 0 && <ProductComparator />}
     <div className="w-full grid justify-center gap-8 grid-cols-[repeat(auto-fit,100%)] md:grid-cols-[repeat(auto-fit,40rem)]">
       {getProducts.map((product) =>
         product.product_name_fr ? (
@@ -22,7 +40,15 @@ export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
             "
             key={product.id}
           >
-            <input type="checkbox" id={product.id} name={product.id} className="absolute hidden" />
+            <input 
+              type="checkbox"
+              id={product.id}
+              name={product.id}
+              className="absolute hidden"
+              checked={isSelected(product.id)}
+              onChange={(e) => handleChange(e)}
+            />
+
             <div className="flex flex-row gap-8 items-center">
               <div className="h-[100px] overflow-hidden flex">
                 <img
@@ -49,5 +75,6 @@ export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
         ) : null
       )}
     </div>
+    </>
   );
 };
