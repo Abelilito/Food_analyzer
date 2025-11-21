@@ -1,22 +1,25 @@
 // SearchFood.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SearchForm } from "../SearchForm/SearchForm";
 import { FoodCard } from "../FoodCard/FoodCard";
 import { BeatLoader } from "react-spinners";
 import { fetchFood } from "../../Data/getFood";
 import { Product } from "../../Type/ProductType";
+import { useSelectableList } from "@/hooks/useSelectableList";
+import ProductComparator from "../ProductComparator";
 
 export const SearchFood = () => {
   const [searchText, setSearchText] = useState("");
-  const [getFood, setGetFood] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isError, setIsError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { selectedItems, toggleItem, isSelected } = useSelectableList<Product>();
 
   const getData = async () => {
     setIsLoading(true);
     try {
       const response = await fetchFood(searchText); 
-      setGetFood(Array.isArray(response) ? response : response.products ?? []);
+      setProducts(Array.isArray(response) ? response : response.products ?? []);
       setIsError(null);
     } catch (error) {
       setIsError(error);
@@ -29,6 +32,18 @@ export const SearchFood = () => {
     e.preventDefault();
     getData();
   };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const id = e.currentTarget.id;
+    const checked = e.currentTarget.checked;
+
+    const selectedItem = products.find((el) => el.id === id);
+    if (!selectedItem) return;
+
+    toggleItem(selectedItem, checked);
+  };
+
+  useEffect(() => { selectedItems }, [selectedItems]);
 
   if (isLoading) {
     return (
@@ -54,11 +69,11 @@ export const SearchFood = () => {
           value={searchText}
           onChangeFn={(e) => setSearchText(e.target.value)}
         />
-        {/* {getFood.length > 0 && <Statistics />} */}
+        {selectedItems.length > 0 && <ProductComparator />}
       </header>
 
       <div className="flex flex-col items-center w-full gap-16 px-4">
-        <FoodCard searchText={searchText} getProducts={getFood} />
+        <FoodCard searchText={searchText} getProducts={products} isSelected={isSelected} handleChange={handleChange} />
       </div>
     </>
   );

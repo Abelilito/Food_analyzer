@@ -8,27 +8,14 @@ import { useSelectableList } from '@/hooks/useSelectableList';
 type FoodCardProps = {
   searchText: string;
   getProducts: Product[];
+  isSelected: (id: string) => boolean;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
+export const FoodCard = ({ searchText, getProducts, isSelected, handleChange }: FoodCardProps) => {
   if (!searchText || getProducts.length === 0) return null;
-  const { selectedItems, toggleItem, isSelected } = useSelectableList<Product>();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const id = e.currentTarget.id;
-    const checked = e.currentTarget.checked;
-
-    const selectedItem = getProducts.find((el) => el.id === id);
-    if (!selectedItem) return;
-
-    toggleItem(selectedItem, checked);
-  };
-
-  useEffect(() => { selectedItems }, [selectedItems]);
 
   return (
-    <>
-    {selectedItems.length > 0 && <ProductComparator />}
     <div className="w-full grid justify-center gap-8 grid-cols-[repeat(auto-fit,100%)] md:grid-cols-[repeat(auto-fit,40rem)]">
       {getProducts.map((product) =>
         product.product_name_fr ? (
@@ -75,6 +62,5 @@ export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
         ) : null
       )}
     </div>
-    </>
   );
 };
