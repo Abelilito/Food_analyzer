@@ -62,13 +62,13 @@ export const SearchProduct = () => {
 
   return (
     <>
-      <header className="w-full sticky top-0 bg-white py-8 px-4 flex flex-col items-center gap-8">
+      <header className="w-full sticky top-0 bg-white py-8 px-4">
         <SearchForm
           onSubmit={onSubmit}
           value={searchText}
           onChangeFn={(e) => setSearchText(e.target.value)}
         />
-        {selectedItems.length > 0 && <ProductComparator />}
+        {selectedItems.length > 1 && <ProductComparator productsSelected={selectedItems} />}
       </header>
 
       <div className="flex flex-col items-center w-full gap-16 px-4">

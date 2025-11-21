@@ -21,10 +21,3 @@ export const fetchProducts = async (searchText: string) => {
     }
   }
 };
-
-// nutriments.energy - kcal;
-// nutriments.proteins;
-// nutriments.sugars;
-// https://world.openfoodfacts.net/api/v2/product/3017620425035?fields=nutriments
-// https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-// https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Math/max

@@ -5,5 +5,5 @@ export type Product = {
   nutrition_grades?: string;
   image_url?: string;
   code?: string;
-  nutriments: { proteins: number, "energy-kcal": number, sugars: number }
+  nutriments: { proteins: number, "energy-kcal": number, sugars: number, salt: string, fat: string }
 };
