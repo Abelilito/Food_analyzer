@@ -38,10 +38,9 @@ export const SearchProduct = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const id = e.currentTarget.id;
     const checked = e.currentTarget.checked;
-
     const selectedItem = products.find((el) => el.id === id);
+    
     if (!selectedItem) return;
-
     toggleItem(selectedItem, checked);
   };
 

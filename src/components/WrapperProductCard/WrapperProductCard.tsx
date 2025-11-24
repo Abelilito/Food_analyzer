@@ -1,15 +1,7 @@
-import { Product } from '../../Type/ProductType';
+import { WrapperProductCardType } from '@/Type/WrapperProductCardType';
 import ProductCard from '../ProductCard';
-import Card from '../ProductCard';
 
-type ProductCardProps = {
-  searchText: string;
-  getProducts: Product[];
-  isSelected: (id: string) => boolean;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
-export const WrapperProductCard = ({ searchText, getProducts, isSelected, handleChange }: ProductCardProps) => {
+export const WrapperProductCard = ({ searchText, getProducts, isSelected, handleChange }: WrapperProductCardType) => {
   if (!searchText || getProducts.length === 0) return null;
 
   return (
