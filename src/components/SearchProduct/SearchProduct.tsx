@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { SearchForm } from "../SearchForm/SearchForm";
-import { ProductCard } from "../Productcard/Productcard";
 import { BeatLoader } from "react-spinners";
 import { Product } from "../../Type/ProductType";
 import { useSelectableList } from "@/hooks/useSelectableList";
 import ProductComparator from "../ProductComparator";
 import { fetchProducts } from "@/Data/fetchProducts";
 import Recommendation from "../Recommendation";
+import { WrapperProductCard } from "../WrapperProductCard/WrapperProductCard";
 
 export const SearchProduct = () => {
   const [searchText, setSearchText] = useState("");
@@ -86,7 +86,7 @@ export const SearchProduct = () => {
       </header>
 
       <div className="flex flex-col items-center w-full gap-16 px-4">
-        <ProductCard
+        <WrapperProductCard
           searchText={searchText}
           getProducts={products}
           isSelected={isSelected}

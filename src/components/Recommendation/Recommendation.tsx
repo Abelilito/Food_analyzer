@@ -1,20 +1,15 @@
-import { Product } from "@/Type/ProductType";
 import { Accordion } from "@radix-ui/react-accordion";
 import { AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
-import Card from "../Card";
+import Card from "../ProductCard";
+import { ProductCardType } from "@/Type/ProductCardType";
 
-type CardType = {
-  item: Product;
-  products: Product[];
-}
-
-export const Recommendation = ({ item, products }: CardType) => {
+export const Recommendation = ({ item, products }: ProductCardType) => {
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
       <AccordionTrigger>Recommandation</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4">
-          <div>Nous vous recommandons ce produit qui est le plus sain dans la liste</div>
+          <div className="text-center">Nous vous recommandons ce produit qui est le plus sain dans la liste</div>
           <Card products={products} item={item} />
         </AccordionContent>
         </AccordionItem>

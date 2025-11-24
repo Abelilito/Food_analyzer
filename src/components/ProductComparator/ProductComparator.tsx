@@ -110,28 +110,36 @@ export const ProductComparator = ({ productsSelected } : { productsSelected: Pro
     <div className="w-full">
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
-          <AccordionTrigger>Comparateur</AccordionTrigger>
+          <AccordionTrigger>Comparateur (x{productsSelected.length})</AccordionTrigger>
           <AccordionContent>
             <Table>
               <TableBody>
                 {productsSelected.map((product, index) =>
                   <TableRow key={index}>
-                    <TableCell className="font-bold">{productName(product)}</TableCell>
+                    <TableCell>
+                      <div className="className='h-[90px] w-[90px] flex justify-center items-center">
+                        <img
+                          src={product.image_url}
+                          title={product.product_name_fr}
+                          alt={product.product_name_fr}
+                        />
+                      </div>
+                    </TableCell>
+
                     {tableRowItems(product.nutriments).map((item, index) => 
                       <TableCell key={index}>
                         <div className="flex flex-row justify-center">
-                          <div style={{ width: 90, height: 90 }}>
+                          <div className="w-[75px] h-[75px] md:w-[90px] md:h-[90px]">
                             <CircularProgressbarWithChildren
                               value={item.percentage}
                               styles={buildStyles({
                                 pathColor:
-                                  item.status === "max" || item.status === "multipleMax"
-                                    ? "#30A46C"
-                                    : "#E5484D"
+                                  item.status === "max" || item.status === "multipleMax" ? "#30A46C" : "#E5484D"
                               })}
                             >
                               <ToolTip icon={item.img} text={item.name} />
-                              <div style={{ fontSize: 12, marginTop: 2 }}>
+
+                              <div className="text-[9px] md:text-[12px] mt-0.5" >
                                 <strong
                                   className={
                                     item.status === "max" || item.status === "multipleMax"
