@@ -58,9 +58,6 @@ export const SearchProduct = () => {
     );
   }
 
-  console.log(products);
-  
-
   return (
     <>
       <header className="w-full sticky top-0 bg-white py-8 px-4">

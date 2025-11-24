@@ -1,6 +1,5 @@
 import { Product } from '@/Type/ProductType'
 import { productName } from '@/utils/productName';
-import { Check, X } from 'lucide-react';
 import { highestNutrimentValue } from '@/utils/highestNutrimentValue';
 import {
   Accordion,
@@ -12,30 +11,76 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { nutrimentsImg } from '@/utils/nutrimentsImg';
+import ToolTip from '../ToolTip';
+
+type NutrimentItem = {
+  name: string;
+  unit: string;
+  dataId: string;
+  img: React.ReactNode;
+  nutrimentsValue: number;
+  percentage: number;
+}
 
 export const ProductComparator = ({ productsSelected } : { productsSelected: Product[]}) => {  
-  const { highestProtein, highestKcal, highestSugars, highestSalt, highestFat } = highestNutrimentValue(productsSelected)
+  const { highestProtein, highestKcal, highestSugars, highestSalt, highestFat } = highestNutrimentValue(productsSelected);
+  const { kcalImg, proteinImg, sugarImg, saltImg, fatImg } = nutrimentsImg();
+  
+  const safeNumber = (value: number | string | undefined): number => {
+    if (value === undefined || value === null) return 0;
+    return typeof value === 'number' ? value : parseFloat(value);
+  }
 
-  const tableRowItems = [{
-    value: "Proteine - g",
-    dataId: highestProtein.id 
-  }, {
-    value: "Calories - Kcal",
-    dataId: highestKcal.id 
-  }, {
-    value: "Sucre - g",
-    dataId: highestSugars.id 
-  }, {
-    value: "Sel - g",
-    dataId: highestSalt.id 
-  }, {
-    value: "Gras - g",
-    dataId: highestFat.id 
-  }]
+  const safePercentage = (value: number | string | undefined, max: number | string | undefined): number => {
+    const num = safeNumber(value);
+    const maxNum = safeNumber(max);
+    if (maxNum === 0) return 0;
+    return (num / maxNum) * 100;
+  }
+
+  const tableRowItems = (nutriments: Product["nutriments"]): NutrimentItem[] => {
+    return [{
+      name: "Proteines",
+      unit: "g",
+      dataId: highestProtein.id,
+      img: proteinImg,
+      nutrimentsValue: safeNumber(nutriments.proteins),
+      percentage: safePercentage(nutriments.proteins, highestProtein.nutriments.proteins)
+    }, {
+      name: "Calories",
+      unit: "kcal",
+      dataId: highestKcal.id,
+      img: kcalImg,
+      nutrimentsValue: nutriments["energy-kcal"],
+      percentage: safePercentage(nutriments["energy-kcal"], highestKcal.nutriments["energy-kcal"])
+    }, {
+      name: "Sucres",
+      unit: "g",
+      dataId: highestSugars.id,
+      img: sugarImg,
+      nutrimentsValue: nutriments.sugars,
+      percentage: safePercentage(nutriments.sugars, highestSugars.nutriments.sugars)
+    }, {
+      name: "Sels",
+      unit: "g",
+      dataId: highestSalt.id,
+      img: saltImg,
+      nutrimentsValue: safeNumber(nutriments.salt),
+      percentage: safePercentage(nutriments.salt, highestSalt.nutriments.salt)
+    }, {
+      name: "Gras",
+      unit: "g",
+      dataId: highestFat.id,
+      img: fatImg,
+      nutrimentsValue: safeNumber(nutriments.fat),
+      percentage: safePercentage(nutriments.fat, highestFat.nutriments.fat)
+    }]
+  }
 
   return (
     <div className="flex justify-center gap-8">
@@ -44,27 +89,27 @@ export const ProductComparator = ({ productsSelected } : { productsSelected: Pro
           <AccordionTrigger>Comparateur</AccordionTrigger>
           <AccordionContent>
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[100px]"></TableHead>
-                  {tableRowItems.map((item, index) =>
-                    <TableHead className="font-bold" key={index}>{item.value}</TableHead>
-                  )}
-                </TableRow>
-              </TableHeader>
-
               <TableBody>
                 {productsSelected.map((product, index) =>
                   <TableRow key={index}>
-                    <TableCell>{productName(product)}</TableCell>
-                    {tableRowItems.map((item, index) => 
+                    <TableCell className="font-bold">{productName(product)}</TableCell>
+                    {tableRowItems(product.nutriments).map((item, index) => 
                       <TableCell key={index}>
                         <div className="flex flex-row justify-center">
-                          {
-                            item.dataId === product.id
-                            ? <Check size={25} strokeWidth={2.25} color='#218358' /> 
-                            : <X size={25} strokeWidth={2.25} color='#CE2C31' />
-                          }
+                          <div style={{ width: 90, height: 90 }}>
+                            <CircularProgressbarWithChildren value={item.percentage} styles={buildStyles({
+                              pathColor: item.dataId === product.id ? '#30A46C' : '#E5484D'
+                            })}>
+                              <ToolTip icon={item.img} text={item.name} />
+                              <div style={{ fontSize: 12, marginTop: 2 }}>
+                                <strong 
+                                className={ item.dataId === product.id ? 'text-[#30A46C]' : 'text-[#E5484D]' }
+                                >
+                                  {item.nutrimentsValue} {item.unit}
+                                </strong>
+                              </div>
+                            </CircularProgressbarWithChildren>
+                          </div>
                         </div>
                       </TableCell>
                     )} 
