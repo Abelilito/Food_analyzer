@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SearchForm } from "../SearchForm/SearchForm";
 import { ProductCard } from "../Productcard/Productcard";
 import { BeatLoader } from "react-spinners";
-import { fetchProducts } from "../../data/fetchProducts";
 import { Product } from "../../Type/ProductType";
 import { useSelectableList } from "@/hooks/useSelectableList";
 import ProductComparator from "../ProductComparator";
+import { fetchProducts } from "@/Data/fetchProducts";
+import Recommendation from "../Recommendation";
 
 export const SearchProduct = () => {
   const [searchText, setSearchText] = useState("");
@@ -13,6 +14,8 @@ export const SearchProduct = () => {
   const [isError, setIsError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { selectedItems, toggleItem, isSelected } = useSelectableList<Product>();
+  const unHealthy = selectedItems.find(item => item.nutriments.sugars > 10);
+  const healthyProduct = products.find(item => item.nutriments.sugars < 10);
 
   const getData = async () => {
     setIsLoading(true);
@@ -57,7 +60,16 @@ export const SearchProduct = () => {
       </div>
     );
   }
-
+  
+  const recommendation = () => {
+    if (selectedItems.length >= 1 && unHealthy) {
+      if (!healthyProduct) return null;
+      return (
+        <Recommendation products={products} item={healthyProduct} />
+      );
+    }
+  }
+  
   return (
     <>
       <header className="w-full sticky top-0 bg-white py-8 px-4">
@@ -66,11 +78,20 @@ export const SearchProduct = () => {
           value={searchText}
           onChangeFn={(e) => setSearchText(e.target.value)}
         />
-        {selectedItems.length > 1 && <ProductComparator productsSelected={selectedItems} />}
+
+        <div className="flex flex-col gap-4 items-center">   
+          {recommendation()}
+          {selectedItems.length > 1 && <ProductComparator productsSelected={selectedItems} />}
+        </div>
       </header>
 
       <div className="flex flex-col items-center w-full gap-16 px-4">
-        <ProductCard searchText={searchText} getProducts={products} isSelected={isSelected} handleChange={handleChange} />
+        <ProductCard
+          searchText={searchText}
+          getProducts={products}
+          isSelected={isSelected}
+          handleChange={handleChange} 
+        />
       </div>
     </>
   );

@@ -107,7 +107,7 @@ export const ProductComparator = ({ productsSelected } : { productsSelected: Pro
   ]
 
   return (
-    <div className="flex justify-center gap-8">
+    <div className="w-full">
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
           <AccordionTrigger>Comparateur</AccordionTrigger>
