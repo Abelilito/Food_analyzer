@@ -23,20 +23,18 @@ export const ProductComparator = ({ productsSelected } : { productsSelected: Pro
     <div className="w-full">
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
-          <AccordionTrigger>Comparateur (x{productsSelected.length})</AccordionTrigger>
+          <AccordionTrigger>Comparateur d'aliments (x{productsSelected.length})</AccordionTrigger>
           <AccordionContent>
             <Table>
               <TableBody>
                 {productsSelected.map((product, index) =>
                   <TableRow key={index}>
-                    <TableCell>
-                      <div className="className='h-[90px] w-[90px] flex justify-center items-center">
+                    <TableCell className="h-[100px] w-[100px] flex justify-center gap-4">
                         <img
                           src={product.image_url}
                           title={product.product_name_fr}
                           alt={product.product_name_fr}
                         />
-                      </div>
                     </TableCell>
 
                     {tableRowItems(product.nutriments).map((item, index) => 
