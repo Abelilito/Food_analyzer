@@ -21,7 +21,7 @@ import ToolTip from '../ToolTip';
 type NutrimentItem = {
   name: string;
   unit: string;
-  dataId: string;
+  dataId: string | undefined;
   img: React.ReactNode;
   nutrimentsValue: number;
   percentage: number;
@@ -43,44 +43,68 @@ export const ProductComparator = ({ productsSelected } : { productsSelected: Pro
     return (num / maxNum) * 100;
   }
 
-  const tableRowItems = (nutriments: Product["nutriments"]): NutrimentItem[] => {
-    return [{
+  const getNutrimentStatus = (value: number, allValues: number[]): "max" | "multipleMax" | "normal" => {
+    const maxValue = Math.max(...allValues);
+    const maxCount = allValues.filter(v => v === maxValue).length;
+
+    if (value === maxValue && maxCount > 1) return "multipleMax"; 
+    if (value === maxValue) return "max"; 
+    return "normal"; 
+  }
+
+  const allProteins = productsSelected.map(p => safeNumber(p.nutriments.proteins));
+  const allCalories = productsSelected.map(p => safeNumber(p.nutriments["energy-kcal"]));
+  const allSugars = productsSelected.map(p => safeNumber(p.nutriments.sugars));
+  const allSalt = productsSelected.map(p => safeNumber(p.nutriments.salt));
+  const allFat = productsSelected.map(p => safeNumber(p.nutriments.fat));
+
+  const tableRowItems = (nutriments: Product["nutriments"]): (NutrimentItem & {status: "max" | "multipleMax" | "normal"})[] => [
+    {
       name: "Proteines",
       unit: "g",
-      dataId: highestProtein.id,
+      dataId: highestProtein?.id,
       img: proteinImg,
       nutrimentsValue: safeNumber(nutriments.proteins),
-      percentage: safePercentage(nutriments.proteins, highestProtein.nutriments.proteins)
-    }, {
+      percentage: safePercentage(nutriments.proteins, highestProtein?.nutriments.proteins),
+      status: getNutrimentStatus(safeNumber(nutriments.proteins), allProteins)
+    },
+    {
       name: "Calories",
       unit: "kcal",
-      dataId: highestKcal.id,
+      dataId: highestKcal?.id,
       img: kcalImg,
-      nutrimentsValue: nutriments["energy-kcal"],
-      percentage: safePercentage(nutriments["energy-kcal"], highestKcal.nutriments["energy-kcal"])
-    }, {
+      nutrimentsValue: safeNumber(nutriments["energy-kcal"]),
+      percentage: safePercentage(nutriments["energy-kcal"], highestKcal?.nutriments["energy-kcal"]),
+      status: getNutrimentStatus(safeNumber(nutriments["energy-kcal"]), allCalories)
+    },
+    {
       name: "Sucres",
       unit: "g",
-      dataId: highestSugars.id,
+      dataId: highestSugars?.id,
       img: sugarImg,
-      nutrimentsValue: nutriments.sugars,
-      percentage: safePercentage(nutriments.sugars, highestSugars.nutriments.sugars)
-    }, {
+      nutrimentsValue: safeNumber(nutriments.sugars),
+      percentage: safePercentage(nutriments.sugars, highestSugars?.nutriments.sugars),
+      status: getNutrimentStatus(safeNumber(nutriments.sugars), allSugars)
+    },
+    {
       name: "Sels",
       unit: "g",
-      dataId: highestSalt.id,
+      dataId: highestSalt?.id,
       img: saltImg,
       nutrimentsValue: safeNumber(nutriments.salt),
-      percentage: safePercentage(nutriments.salt, highestSalt.nutriments.salt)
-    }, {
+      percentage: safePercentage(nutriments.salt, highestSalt?.nutriments.salt),
+      status: getNutrimentStatus(safeNumber(nutriments.salt), allSalt)
+    },
+    {
       name: "Gras",
       unit: "g",
-      dataId: highestFat.id,
+      dataId: highestFat?.id,
       img: fatImg,
       nutrimentsValue: safeNumber(nutriments.fat),
-      percentage: safePercentage(nutriments.fat, highestFat.nutriments.fat)
-    }]
-  }
+      percentage: safePercentage(nutriments.fat, highestFat?.nutriments.fat),
+      status: getNutrimentStatus(safeNumber(nutriments.fat), allFat)
+    }
+  ]
 
   return (
     <div className="flex justify-center gap-8">
@@ -97,13 +121,23 @@ export const ProductComparator = ({ productsSelected } : { productsSelected: Pro
                       <TableCell key={index}>
                         <div className="flex flex-row justify-center">
                           <div style={{ width: 90, height: 90 }}>
-                            <CircularProgressbarWithChildren value={item.percentage} styles={buildStyles({
-                              pathColor: item.dataId === product.id ? '#30A46C' : '#E5484D'
-                            })}>
+                            <CircularProgressbarWithChildren
+                              value={item.percentage}
+                              styles={buildStyles({
+                                pathColor:
+                                  item.status === "max" || item.status === "multipleMax"
+                                    ? "#30A46C"
+                                    : "#E5484D"
+                              })}
+                            >
                               <ToolTip icon={item.img} text={item.name} />
                               <div style={{ fontSize: 12, marginTop: 2 }}>
-                                <strong 
-                                className={ item.dataId === product.id ? 'text-[#30A46C]' : 'text-[#E5484D]' }
+                                <strong
+                                  className={
+                                    item.status === "max" || item.status === "multipleMax"
+                                      ? 'text-[#30A46C]'
+                                      : 'text-[#E5484D]'
+                                  }
                                 >
                                   {item.nutrimentsValue} {item.unit}
                                 </strong>

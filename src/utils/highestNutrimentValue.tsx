@@ -1,25 +1,22 @@
 import { Product } from "@/Type/ProductType";
 
 export function highestNutrimentValue(products: Product[]) {
-  const highestProtein = products.reduce((max, item) => {
-    return item.nutriments.proteins > max.nutriments.proteins ? item : max
-  });
+  const getHighestNutrient = (products: Product[], key: keyof Product["nutriments"]) => {
+  if (!products.length) return null;
+  const firstValue = products[0].nutriments[key];
+  if (products.every(p => p.nutriments[key] === firstValue)) return null;
+  return products.reduce((max, item) => item.nutriments[key] > max.nutriments[key] ? item : max, products[0]);
+}
 
-  const highestKcal = products.reduce((max, item) => {  
-    return item.nutriments["energy-kcal"] > max.nutriments["energy-kcal"] ?  item : max
-  });
+  const highestProtein = getHighestNutrient(products, "proteins");
 
-  const highestSugars = products.reduce((max, item) => {  
-    return item.nutriments.sugars > max.nutriments.sugars ?  item : max
-  });
+  const highestKcal = getHighestNutrient(products, "energy-kcal"); 
 
-  const highestSalt = products.reduce((max, item) => {  
-    return item.nutriments.salt > max.nutriments.salt ?  item : max
-  });
+  const highestSugars = getHighestNutrient(products, "sugars");
 
-  const highestFat = products.reduce((max, item) => {  
-    return item.nutriments.fat > max.nutriments.fat ?  item : max
-  });
+  const highestSalt = getHighestNutrient(products, "salt");
+
+  const highestFat = getHighestNutrient(products, "fat");
 
   return { highestProtein, highestKcal, highestSugars, highestSalt, highestFat }
 }
