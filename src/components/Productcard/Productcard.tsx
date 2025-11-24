@@ -2,6 +2,7 @@ import { Product } from '../../Type/ProductType';
 import { Nutriscore } from '../Nutriscrore/Nutriscore';
 import NutrimentsBadge from '../NutrimentsBadge';
 import { productName } from '@/utils/productName';
+import Score from '../Score';
 
 type ProductCardProps = {
   searchText: string;
@@ -12,6 +13,8 @@ type ProductCardProps = {
 
 export const ProductCard = ({ searchText, getProducts, isSelected, handleChange }: ProductCardProps) => {
   if (!searchText || getProducts.length === 0) return null;
+  console.log(getProducts);
+  
 
   return (
     <div className="w-full grid justify-center gap-8 grid-cols-[repeat(auto-fit,100%)] md:grid-cols-[repeat(auto-fit,40rem)]">
@@ -43,9 +46,10 @@ export const ProductCard = ({ searchText, getProducts, isSelected, handleChange 
                 />
               </div>
 
-              <div className="flex flex-col justify-around gap-[5px]">
-                <div className="font-bold text-[15px]">
+              <div className="flex flex-col justify-around gap-[5px] w-full">
+                <div className="font-bold text-[15px] flex justify-between gap-4">
                   {productName(product)}
+                  <Score nutriscore={product.nutrition_grades} sugarLevel={product.nutriments.sugars} />
                 </div>
                 
                 <div className="flex gap-4 items-center">
