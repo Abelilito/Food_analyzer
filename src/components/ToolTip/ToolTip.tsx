@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/tooltip"
 import { ReactElement } from "react"
 
-export function ToolTip({icon, text}: {icon: ReactElement, text: string}) {
+export function ToolTip({icon, text}: {icon: React.ReactNode, text: string}) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>

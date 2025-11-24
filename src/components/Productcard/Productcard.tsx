@@ -1,13 +1,16 @@
 import { Product } from '../../Type/ProductType';
 import { Nutriscore } from '../Nutriscrore/Nutriscore';
 import NutrimentsBadge from '../NutrimentsBadge';
+import { productName } from '@/utils/productName';
 
-type FoodCardProps = {
+type ProductCardProps = {
   searchText: string;
   getProducts: Product[];
+  isSelected: (id: string) => boolean;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
+export const ProductCard = ({ searchText, getProducts, isSelected, handleChange }: ProductCardProps) => {
   if (!searchText || getProducts.length === 0) return null;
 
   return (
@@ -22,7 +25,15 @@ export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
             "
             key={product.id}
           >
-            <input type="checkbox" id={product.id} name={product.id} className="absolute hidden" />
+            <input 
+              type="checkbox"
+              id={product.id}
+              name={product.id}
+              className="absolute hidden"
+              checked={isSelected(product.id)}
+              onChange={(e) => handleChange(e)}
+            />
+
             <div className="flex flex-row gap-8 items-center">
               <div className="h-[100px] overflow-hidden flex">
                 <img
@@ -34,9 +45,7 @@ export const FoodCard = ({ searchText, getProducts }: FoodCardProps) => {
 
               <div className="flex flex-col justify-around gap-[5px]">
                 <div className="font-bold text-[15px]">
-                  {product.quantity_imported
-                    ? `${product.product_name_fr} - ${product.quantity_imported}`
-                    : product.product_name_fr}
+                  {productName(product)}
                 </div>
                 
                 <div className="flex gap-4 items-center">
