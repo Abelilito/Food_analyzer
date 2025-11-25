@@ -76,7 +76,6 @@ export const SearchProduct = () => {
           <img src= "./logo.svg" className="w-[200px]" />
           <SearchForm
             onSubmit={onSubmit}
-            value={searchText}
             onChangeFn={(e) => setSearchText(e.target.value)}
           />
         </div>

@@ -4,10 +4,9 @@ import { ButtonGroup } from "../ui/button-group";
 type SearchFormProps = {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onChangeFn: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value: string;
 };
 
-export const SearchForm = ({ onSubmit, onChangeFn, value }: SearchFormProps) => {
+export const SearchForm = ({ onSubmit, onChangeFn }: SearchFormProps) => {
   return (
     <form onSubmit={onSubmit}>
       <ButtonGroup>
@@ -18,7 +17,6 @@ export const SearchForm = ({ onSubmit, onChangeFn, value }: SearchFormProps) => 
             focus-visible:outline-none  md:w-[335px] w-full
           "
           placeholder="Chercher un produit"
-          value={value}
           onChange={onChangeFn}
         />
 
