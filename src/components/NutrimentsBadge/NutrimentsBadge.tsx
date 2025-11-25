@@ -16,9 +16,9 @@ export const NutrimentsBadge = ({ getProducts, productId }: NutrimentsProps) => 
   if (highestKcal || highestProtein || highestSugars) {
     return (
       <div className="mt-[15px] flex gap-4">
-        {highestKcal.id === productId && <ToolTip icon={kcalImg} text="Ce produit est le plus riche en calorie" />}
-        {highestProtein.id === productId && <ToolTip icon={proteinImg} text="Ce produit est le plus riche en protéines" />}
-        {highestSugars.id === productId && <ToolTip icon={sugarImg} text="Ce produit est le plus riche en sucre" />}
+        {highestKcal?.id === productId && <ToolTip icon={kcalImg} text="Ce produit est le plus riche en calorie" />}
+        {highestProtein?.id === productId && <ToolTip icon={proteinImg} text="Ce produit est le plus riche en protéines" />}
+        {highestSugars?.id === productId && <ToolTip icon={sugarImg} text="Ce produit est le plus riche en sucre" />}
       </div>
     )
   }
