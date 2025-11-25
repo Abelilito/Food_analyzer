@@ -71,12 +71,15 @@ export const SearchProduct = () => {
   
   return (
     <>
-      <header className="w-full sticky top-0 bg-white py-8 px-4">
-        <SearchForm
-          onSubmit={onSubmit}
-          value={searchText}
-          onChangeFn={(e) => setSearchText(e.target.value)}
-        />
+      <header className="w-full sticky top-0 bg-white py-8 px-4 md:px-20">
+        <div className="flex justify-between flex-col md:flex-row gap-4">
+          <img src= "./logo.svg" className="w-[200px]" />
+          <SearchForm
+            onSubmit={onSubmit}
+            value={searchText}
+            onChangeFn={(e) => setSearchText(e.target.value)}
+          />
+        </div>
 
         <div className="flex flex-col gap-4 items-center">   
           {recommendation()}
