@@ -44,7 +44,7 @@ export const PieChart = ({ item }: PieChartProps) => {
   }
 
   return (
-    <div className="w-[120px] h-[120px]">
+    <div className="w-[110px] h-[110px]">
       <Pie
         data={chartData}
         options={option}
