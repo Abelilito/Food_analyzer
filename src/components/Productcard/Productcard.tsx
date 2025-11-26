@@ -7,7 +7,7 @@ import PieChart from "../PieChart"
 
 export const ProductCard = ({ item, products }: ProductCardType) => {
   return (
-    <div className="flex flex-row gap-8 items-center">
+    <div className="flex flex-col gap-4">
       <div className="h-[100px] overflow-hidden flex">
         <img
           src={item.image_url}
@@ -16,17 +16,21 @@ export const ProductCard = ({ item, products }: ProductCardType) => {
         />
       </div>
 
-      <div className="flex flex-col justify-around gap-[5px] w-full">
+      <div className="flex flex-col justify-around gap-4 w-full">
         <div className="font-bold text-[15px] justify-between gap-4 items-center">
           <div className="flex gap-4">
-            <Score nutriscore={item.nutrition_grades} sugarLevel={item.nutriments.sugars} />
             {productName(item)}
+            <div>
+              <Score nutriscore={item.nutrition_grades} sugarLevel={item.nutriments.sugars} />
+            </div>
           </div>
         </div>
         
-        <div className="flex gap-4 items-center">
-          <Nutriscore nutriscore={item.nutrition_grades} />
-          <NutrimentsBadge getProducts={products} productId={item.id} />
+        <div className="flex gap-4 justify-between items-center">
+          <div className="flex gap-4">
+            <Nutriscore nutriscore={item.nutrition_grades} />
+            <NutrimentsBadge getProducts={products} productId={item.id} />
+          </div>
           <PieChart item={item} />
         </div>
       </div>

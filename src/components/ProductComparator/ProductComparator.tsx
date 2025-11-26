@@ -23,7 +23,9 @@ export const ProductComparator = ({ productsSelected } : { productsSelected: Pro
     <div className="w-full">
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
-          <AccordionTrigger>Comparateur d'aliments (x{productsSelected.length})</AccordionTrigger>
+          <AccordionTrigger>
+            Comparateur d'aliments <span className="text-[#6d28d9]">(x{productsSelected.length})</span>
+          </AccordionTrigger>
           <AccordionContent>
             <Table>
               <TableBody>
