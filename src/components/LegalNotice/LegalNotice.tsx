@@ -4,8 +4,8 @@ export const LegalNotice = () => {
       Abel Ilito.L, 2025
       <div>
         Code source :{" "}
-        <a href="https://github.com/Abelilito/Registration-form">
-          Github/Abelilito/Registration-form
+        <a href="https://github.com/Abelilito//Food_analyzer/">
+          Github/Abelilito//Food_analyzer/
         </a>
       </div>
     </div>
