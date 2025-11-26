@@ -14,7 +14,7 @@ export const SearchForm = ({ onSubmit, onChangeFn }: SearchFormProps) => {
           name="food_name"
           className="
             border-[#737373] border border-solid p-6 h-12 rounded-md text-[0.8rem] focus:border-[#6d28d9] 
-            focus-visible:outline-none  md:w-[335px] w-full
+            focus-visible:outline-none md:w-[335px] w-full placeholder-shown:bg-[#FEFDFC] bg-transparent
           "
           placeholder="Chercher un produit"
           onChange={onChangeFn}

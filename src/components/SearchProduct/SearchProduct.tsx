@@ -46,7 +46,7 @@ export const SearchProduct = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen bg-[#FEFDFC]">
         <BeatLoader color="#6d28d9" size={20} />
       </div>
     );
@@ -71,7 +71,7 @@ export const SearchProduct = () => {
   
   return (
     <>
-      <header className="w-full sticky top-0 bg-white py-8 px-4 md:px-20">
+      <header className="w-full sticky top-0 py-8 px-4 md:px-20 bg-[#FEFDFC] border border-solid border-b-[#F6EEE7]">
         <div className="flex justify-between flex-col md:flex-row gap-4">
           <img src= "./logo.svg" className="w-[200px]" />
           <SearchForm
@@ -86,7 +86,7 @@ export const SearchProduct = () => {
         </div>
       </header>
 
-      <div className="flex flex-col items-center w-full gap-16 px-4">
+      <div className="flex flex-col items-center w-full gap-16 px-4 bg-[#FEFDFC] py-8">
         <WrapperProductCard
           searchText={searchText}
           getProducts={products}
