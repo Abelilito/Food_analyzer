@@ -73,7 +73,7 @@ export const SearchProduct = () => {
     <div>
       <header className="w-full sticky top-0 py-8 px-4 md:px-20 bg-[#FEFDFC] border border-solid border-b-[#F6EEE7]">
         <div className="flex justify-between flex-col md:flex-row gap-4">
-          <img src="/Food_analyzer/logo.svg" className="w-[200px]" />
+          <img src="./logo.svg" className="w-[200px]" />
           <SearchForm
             onSubmit={onSubmit}
             onChangeFn={(e) => setSearchText(e.target.value)}
