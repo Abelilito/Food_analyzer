@@ -11,5 +11,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/food_analyzer"
+  base: "/Food_analyzer"
 })
